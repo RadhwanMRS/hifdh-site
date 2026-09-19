@@ -16,5 +16,9 @@ deux versions divergent. La source fait foi.
 
 ## Déploiement
 
-Pousser sur `main` suffit : le workflow `.github/workflows/pages.yml` publie le
-contenu sur GitHub Pages et active Pages au premier passage.
+GitHub Pages sert directement le contenu de `main`, sans étape de construction :
+le site est en HTML et CSS statiques, et `.nojekyll` demande à Pages de ne rien
+transformer. Pousser sur `main` suffit donc à mettre le site à jour.
+
+Réglage à faire une seule fois, dans **Settings → Pages** :
+*Source* → **Deploy from a branch**, branche `main`, dossier `/ (root)`.
