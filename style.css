@@ -1,0 +1,78 @@
+/* Palette et typographie reprises de l'application, pour que le passage du
+   reel au site puis à l'app ne donne jamais l'impression de changer d'univers. */
+:root {
+  --paper: #faf3e8;
+  --paper-raised: #f2e6d4;
+  --ink: #2e241b;
+  --ink-soft: #7a6a5b;
+  --gold: #c8912f;
+  --green: #3ba776;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #14100c;
+    --paper-raised: #221b14;
+    --ink: #f3e9dc;
+    --ink-soft: #b3a393;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0 20px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Nunito, "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+}
+
+main { max-width: 720px; margin: 0 auto; padding: 48px 0 80px; }
+
+header { text-align: center; padding: 32px 0 8px; }
+header img { width: 96px; height: 96px; border-radius: 22px; }
+
+h1 { font-size: 2rem; margin: 20px 0 8px; }
+h2 { font-size: 1.3rem; margin: 40px 0 8px; }
+h3 { font-size: 1.05rem; margin: 28px 0 4px; }
+p, li { color: var(--ink); }
+.lead { font-size: 1.15rem; color: var(--ink-soft); text-align: center; margin: 0 0 32px; }
+.muted { color: var(--ink-soft); font-size: 0.95rem; }
+
+.cta {
+  display: inline-block;
+  background: var(--gold);
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+  padding: 16px 28px;
+  border-radius: 16px;
+  box-shadow: 0 4px 0 #9a6e23;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.cta.secondary { background: transparent; color: var(--gold); box-shadow: none; border: 2px solid var(--gold); }
+.cta[aria-disabled="true"] { background: var(--ink-soft); box-shadow: none; opacity: 0.6; pointer-events: none; }
+.actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin: 32px 0; }
+
+.features { display: grid; gap: 22px; margin: 40px 0; }
+.feature { background: var(--paper-raised); border-radius: 18px; padding: 20px 22px; }
+.feature h3 { margin-top: 0; }
+.feature p { margin: 0; color: var(--ink-soft); }
+
+.shots { display: flex; gap: 14px; overflow-x: auto; padding: 8px 0 20px; }
+.shots img { width: 210px; border-radius: 16px; border: 1px solid rgba(122, 106, 91, 0.3); }
+
+table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+th, td { text-align: start; padding: 10px 8px; border-bottom: 1px solid rgba(122, 106, 91, 0.25); vertical-align: top; }
+th { color: var(--ink-soft); font-weight: 700; }
+
+footer { text-align: center; padding: 40px 0; color: var(--ink-soft); font-size: 0.9rem; }
+a { color: var(--gold); }
+
+.langs { text-align: center; margin-bottom: 24px; }
+.langs a { margin: 0 8px; }
+
+[dir="rtl"] { font-family: Amiri, Nunito, serif; }
