@@ -14,7 +14,7 @@
 
   <section id="fr">
     <h1>Politique de confidentialité</h1>
-    <p class="muted">Application Hifdh (<code>com.hifdh.app</code>) — dernière mise à jour : 19 septembre 2026</p>
+    <p class="muted">Application Hifdh (<code>com.hifdh.app</code>) — dernière mise à jour : 11 octobre 2026</p>
 
     <h2>En résumé</h2>
     <p><strong>Hifdh ne collecte aucune donnée personnelle.</strong> L'application
@@ -24,7 +24,7 @@
     votre appareil</strong> et n'est transmise à personne. Désinstaller
     l'application efface ces données.</p>
 
-    <h2>La seule requête qui sort de votre téléphone</h2>
+    <h2>Les requêtes qui sortent de votre téléphone</h2>
     <p>Le texte du Coran, ses traductions et sa phonétique sont embarqués dans
     l'application : les consulter ne nécessite aucune connexion.</p>
     <p>En revanche, <strong>la récitation est téléchargée à la demande</strong>
@@ -34,6 +34,24 @@
     serveur qui la reçoit. Nous ne contrôlons pas ce service et n'en recevons
     aucune information. Si vous préférez l'éviter, n'utilisez pas le bouton
     d'écoute : le reste de l'application fonctionne sans.</p>
+    <p>De même, si vous activez le <strong>Tajwid</strong> (option payante), la
+    décomposition mot à mot est obtenue auprès de l'API publique de
+    <a href="https://quran.com">Quran.com</a>, puis conservée dans le cache de
+    l'application. Les juz' 30 et 29 sont livrés avec l'application et ne
+    déclenchent aucune requête ; au-delà, la même remarque s'applique : votre
+    adresse IP est exposée au serveur qui reçoit la demande. Sans le Tajwid
+    activé, aucune requête n'est faite vers ce service.</p>
+
+    <h2>Le micro et la récitation écoutée</h2>
+    <p>La <strong>récitation écoutée</strong> (option Premium) vous demande
+    l'accès au <strong>micro</strong>, seulement au moment où vous choisissez de
+    réciter. Votre voix est transcrite <strong>sur votre téléphone</strong>, par
+    un modèle de reconnaissance téléchargé une fois depuis
+    <a href="https://github.com/RadhwanMRS/hifdh-site/releases">la page du
+    projet sur GitHub</a> : <strong>l'enregistrement ne quitte jamais
+    l'appareil</strong>, n'est envoyé à aucun serveur et est effacé après la
+    transcription. Refuser le micro ne change rien au reste de
+    l'application.</p>
 
     <h2>Ce que nous ne faisons pas</h2>
     <table>
@@ -41,7 +59,7 @@
       <tr><th>Publicité</th><td>Aucune, et aucune régie n'est intégrée.</td></tr>
       <tr><th>Mesure d'audience</th><td>Aucune. Nous ne savons pas combien de leçons vous faites.</td></tr>
       <tr><th>Partage ou vente de données</th><td>Impossible : nous n'en détenons aucune.</td></tr>
-      <tr><th>Autorisations Android</th><td>Uniquement l'accès à Internet, pour télécharger la récitation.</td></tr>
+      <tr><th>Autorisations Android</th><td>L'accès à Internet, pour télécharger la récitation, et les notifications si vous activez le rappel quotidien. Le rappel est calculé sur votre téléphone : l'heure que vous choisissez n'en sort jamais.</td></tr>
     </table>
 
     <h2>Enfants</h2>
@@ -59,7 +77,7 @@
 
   <section id="en" lang="en">
     <h1>Privacy policy</h1>
-    <p class="muted">Hifdh app (<code>com.hifdh.app</code>) — last updated: 19 September 2026</p>
+    <p class="muted">Hifdh app (<code>com.hifdh.app</code>) — last updated: 11 October 2026</p>
 
     <h2>In short</h2>
     <p><strong>Hifdh collects no personal data.</strong> There is no account, no
@@ -67,7 +85,7 @@
     experience points, streak, review state — is stored <strong>on your device
     only</strong> and is sent to no one. Uninstalling the app erases it.</p>
 
-    <h2>The only request that leaves your phone</h2>
+    <h2>The requests that leave your phone</h2>
     <p>The Quranic text, its translations and its transliteration ship inside the
     app: reading them requires no connection.</p>
     <p>The recitation, however, <strong>is downloaded on demand</strong> from the
@@ -76,6 +94,21 @@
     it exposes your IP address to the server receiving it. We do not control that
     service and receive nothing from it. If you would rather avoid it, don't use
     the listen button — the rest of the app works without it.</p>
+    <p>Likewise, if you turn on <strong>Tajweed</strong> (a paid option), the
+    word-by-word breakdown is fetched from the public
+    <a href="https://quran.com">Quran.com</a> API and then kept in the app's
+    cache. Juz 30 and 29 ship with the app and trigger no request; beyond them
+    the same remark applies: your IP address is exposed to the server receiving
+    the request. With Tajweed off, no request is made to that service.</p>
+
+    <h2>The microphone and listened recitation</h2>
+    <p><strong>Listened recitation</strong> (a Premium option) asks for the
+    <strong>microphone</strong>, only when you choose to recite. Your voice is
+    transcribed <strong>on your phone</strong> by a recognition model downloaded
+    once from <a href="https://github.com/RadhwanMRS/hifdh-site/releases">the
+    project's GitHub page</a>: <strong>the recording never leaves the
+    device</strong>, is sent to no server and is deleted after transcription.
+    Refusing the microphone changes nothing in the rest of the app.</p>
 
     <h2>What we don't do</h2>
     <table>
@@ -83,7 +116,7 @@
       <tr><th>Advertising</th><td>None, and no ad SDK is bundled.</td></tr>
       <tr><th>Analytics</th><td>None. We don't know how many lessons you do.</td></tr>
       <tr><th>Sharing or selling data</th><td>Impossible: we hold none.</td></tr>
-      <tr><th>Android permissions</th><td>Internet access only, to download the recitation.</td></tr>
+      <tr><th>Android permissions</th><td>Internet access, to download the recitation, and notifications if you turn on the daily reminder. The reminder is worked out on your phone: the time you choose never leaves it.</td></tr>
     </table>
 
     <h2>Children</h2>
@@ -101,7 +134,7 @@
 
   <section id="ar" lang="ar" dir="rtl">
     <h1>سياسة الخصوصية</h1>
-    <p class="muted">تطبيق حفظ (<code>com.hifdh.app</code>) — آخر تحديث: ١٩ سبتمبر ٢٠٢٦</p>
+    <p class="muted">تطبيق حفظ (<code>com.hifdh.app</code>) — آخر تحديث: ١١ أكتوبر ٢٠٢٦</p>
 
     <h2>باختصار</h2>
     <p><strong>لا يجمع تطبيق حفظ أي بيانات شخصية.</strong> لا حساب، ولا إعلانات،
@@ -109,13 +142,26 @@
     والسلسلة وحالة المراجعات — <strong>على جهازك وحده</strong> ولا يُرسل إلى أحد.
     وحذف التطبيق يمحوه.</p>
 
-    <h2>الطلب الوحيد الذي يغادر هاتفك</h2>
+    <h2>الطلبات التي تغادر هاتفك</h2>
     <p>النص القرآني وترجماته ونقحرته مضمّنة داخل التطبيق، وقراءتها لا تحتاج إلى
     اتصال. أما التلاوة <strong>فتُنزَّل عند الطلب</strong> من خدمة
     <a href="https://everyayah.com">everyayah.com</a> العامة ثم تُحفظ في ذاكرة
     التطبيق لتُسمع لاحقًا دون اتصال. وهذا الطلب، كأي طلب عبر الإنترنت، يكشف عنوان
     IP للخادم الذي يستقبله. لا نتحكم في تلك الخدمة ولا نتلقى منها شيئًا. وإن
     فضّلت تجنّبه، فلا تستخدم زر الاستماع؛ وبقية التطبيق تعمل دونه.</p>
+    <p>وكذلك، إن فعّلت <strong>التجويد</strong> (خيار مدفوع)، فإن التقسيم كلمة
+    بكلمة يُجلب من واجهة <a href="https://quran.com">Quran.com</a> العامة ثم
+    يُحفظ في ذاكرة التطبيق. الجزءان الثلاثون والتاسع والعشرون مضمّنان في التطبيق
+    ولا يستدعيان أي طلب؛ وما سواهما ينطبق عليه ما سبق: يُكشف عنوان IP للخادم
+    الذي يستقبل الطلب. ومع إيقاف التجويد، لا يُرسل أي طلب إلى تلك الخدمة.</p>
+
+    <h2>الميكروفون والتلاوة المسموعة</h2>
+    <p>تطلب <strong>التلاوة المسموعة</strong> (خيار مميّز) الوصول إلى
+    <strong>الميكروفون</strong>، فقط حين تختار أن تتلو. يُحوَّل صوتك إلى نص
+    <strong>على هاتفك</strong> بنموذج تعرّف يُنزَّل مرة واحدة من
+    <a href="https://github.com/RadhwanMRS/hifdh-site/releases">صفحة المشروع على GitHub</a>:
+    <strong>لا يغادر التسجيل جهازك أبدًا</strong>، ولا يُرسل إلى أي خادم، ويُحذف
+    بعد التحويل. رفض الميكروفون لا يغيّر شيئًا في بقية التطبيق.</p>
 
     <h2>ما لا نفعله</h2>
     <table>
@@ -123,7 +169,7 @@
       <tr><th>إعلانات</th><td>لا توجد، ولا حزمة إعلانات مدمجة.</td></tr>
       <tr><th>قياس الاستخدام</th><td>لا يوجد. لا نعلم كم درسًا أنجزت.</td></tr>
       <tr><th>مشاركة البيانات أو بيعها</th><td>مستحيل: لا نملك أي بيانات.</td></tr>
-      <tr><th>أذونات أندرويد</th><td>الوصول إلى الإنترنت فقط، لتنزيل التلاوة.</td></tr>
+      <tr><th>أذونات أندرويد</th><td>الوصول إلى الإنترنت لتنزيل التلاوة، والتنبيهات إذا فعّلت التنبيه اليومي. يُحسب التنبيه على هاتفك، ولا تغادره الساعة التي اخترتها.</td></tr>
     </table>
 
     <h2>الأطفال</h2>
