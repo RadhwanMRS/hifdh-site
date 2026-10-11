@@ -1,0 +1,132 @@
+# Convertit le modèle de reconnaissance de la récitation et le publie.
+#
+# Source : tarteel-ai/whisper-base-ar-quran (Hugging Face, licence Apache-2.0),
+# un Whisper base affiné sur la récitation coranique (WER 5,75 %). On le
+# convertit nous-mêmes au format de whisper.cpp et on le quantifie en q5_0
+# (~55 Mo), plutôt que de dépendre d'une conversion tierce : la provenance
+# du fichier que l'application télécharge est ainsi vérifiable, de bout en bout.
+#
+# Il tourne dans le dépôt PUBLIC `hifdh-site`, copie de `docs/site/` : le
+# dépôt de l'application est privé, et les fichiers de ses Releases n'y sont
+# accessibles qu'authentifié — le téléphone recevait un 404. Publié là-bas, le
+# modèle se télécharge sans compte, avec le seul jeton du workflow.
+#
+# À lancer à la main (onglet Actions de `hifdh-site` → « Modèle de
+# récitation » → Run workflow), une fois par version du modèle. Le résultat
+# est publié dans la Release dont `lib/core/recitation/model_store.dart`
+# connaît l'adresse, avec son empreinte SHA-256 — à reporter ensuite dans
+# `RecitationModel.sha256Hex`.
+name: Modèle de récitation
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release où publier le modèle
+        default: model-whisper-base-ar-quran-v1
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    name: Convertir et publier
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      OUT: ggml-whisper-base-ar-quran-q5_0.bin
+      # Versions épinglées : une conversion se rejoue à l'identique.
+      WHISPER_CPP_REF: v1.7.5
+      OPENAI_WHISPER_REF: v20240930
+      HF_MODEL: tarteel-ai/whisper-base-ar-quran
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Outils de conversion
+        run: |
+          # PyTorch en version CPU : la conversion ne fait que lire les poids.
+          pip install --index-url https://download.pytorch.org/whl/cpu torch
+          # Versions épinglées, contemporaines de whisper.cpp v1.7.5 : le hub
+          # 1.0 a retiré `huggingface-cli`, et transformers 5 n'est plus celui
+          # pour lequel le script de conversion a été écrit.
+          pip install "numpy<2" transformers==4.46.3 huggingface_hub==0.26.5
+
+      - name: Télécharger le modèle Tarteel
+        run: |
+          # Par l'API Python : le nom de la commande change selon les versions.
+          python -c "import os; from huggingface_hub import snapshot_download; snapshot_download(os.environ['HF_MODEL'], local_dir='hf-model')"
+          ls -la hf-model
+
+      - name: Récupérer whisper.cpp et openai/whisper
+        run: |
+          git clone --depth 1 --branch "$WHISPER_CPP_REF" https://github.com/ggerganov/whisper.cpp
+          # Le script de conversion lit les filtres mel d'openai/whisper.
+          git clone --depth 1 --branch "$OPENAI_WHISPER_REF" https://github.com/openai/whisper
+
+      - name: Convertir au format ggml
+        run: |
+          # Le script de whisper.cpp prend `max_length` pour la taille du
+          # contexte texte, qui est en réalité `max_target_positions`. Chez
+          # Tarteel les deux diffèrent (1024 contre 448) : le fichier produit
+          # annonçait 1024 positions pour un poids de 448, et ne se chargeait
+          # pas. On aligne `max_length` sur la vraie valeur avant de convertir.
+          python - <<'PY'
+          import json
+          path = 'hf-model/config.json'
+          config = json.load(open(path))
+          config['max_length'] = config['max_target_positions']
+          json.dump(config, open(path, 'w'), indent=2)
+          print('max_length =', config['max_length'])
+          PY
+          mkdir -p out
+          python whisper.cpp/models/convert-h5-to-ggml.py hf-model whisper out
+          ls -la out
+
+      - name: Quantifier en q5_0
+        run: |
+          cmake -S whisper.cpp -B whisper.cpp/build -DCMAKE_BUILD_TYPE=Release
+          cmake --build whisper.cpp/build -j "$(nproc)" --config Release
+          # Le binaire a changé de nom selon les versions.
+          QUANTIZE=$(find whisper.cpp/build -type f -perm -u+x \( -name 'whisper-quantize' -o -name 'quantize' \) | head -n 1)
+          test -n "$QUANTIZE"
+          "$QUANTIZE" out/ggml-model.bin "$OUT" q5_0
+          ls -la "$OUT"
+
+      - name: Vérifier que le modèle se charge et transcrit
+        run: |
+          CLI=$(find whisper.cpp/build -type f -perm -u+x \( -name 'whisper-cli' -o -name 'main' \) | head -n 1)
+          test -n "$CLI"
+          # Un échantillon livré avec whisper.cpp : on vérifie que le fichier
+          # est lisible et produit une transcription, pas sa qualité.
+          "$CLI" -m "$OUT" -l ar -f whisper.cpp/samples/jfk.wav -nt | tee transcript.txt
+          test -s transcript.txt
+
+      - name: Empreinte
+        run: |
+          sha256sum "$OUT" | tee "$OUT.sha256"
+          cat > NOTICE.txt <<'EOF'
+          ggml-whisper-base-ar-quran-q5_0.bin
+          Converted from tarteel-ai/whisper-base-ar-quran (Apache License 2.0),
+          https://huggingface.co/tarteel-ai/whisper-base-ar-quran
+          itself fine-tuned from openai/whisper-base (MIT License).
+          Converted with whisper.cpp ${{ env.WHISPER_CPP_REF }} (MIT License).
+          EOF
+
+      - name: Publier dans la Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --title "Modèle de récitation ($TAG)" \
+              --notes "Whisper base spécialisé Coran (tarteel-ai, Apache-2.0), converti pour whisper.cpp et quantifié en q5_0. Téléchargé à la demande par l'application Hifdh." \
+              --prerelease
+          fi
+          gh release upload "$TAG" "$OUT" "$OUT.sha256" NOTICE.txt --clobber
+          echo "SHA-256 à reporter dans RecitationModel.sha256Hex :"
+          cut -d' ' -f1 "$OUT.sha256"
